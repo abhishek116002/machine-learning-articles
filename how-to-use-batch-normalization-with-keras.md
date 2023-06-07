@@ -63,7 +63,7 @@ As we saw before, neural networks train fast if the distribution of the input da
 
 **Normalizing the value:** $$\hat{x}_B^{(k)} \leftarrow \frac{x_B{ ^{(k)} } - \mu_B^{(k)}}{\sqrt{ \sigma^2{ _B^{(k)} } + \epsilon}}$$
 
-Every input $x_B{ ^{(k)}}$ is normalized by first subtracting input sample mean $ \mu_B^{(k)} $ and then dividing by $ \sqrt{ \sigma^2{_B^{(k)} } + \epsilon} $, which is the square root of the variance of the input sample, plus some $ \epsilon $. Do note:
+Every input $x_B{ ^{(k)}}$ is normalized by first subtracting input sample mean $\mu_B^{(k)}$ and then dividing by $\sqrt{ \sigma^2{_B^{(k)} } + \epsilon}$, which is the square root of the variance of the input sample, plus some $\epsilon$. Do note:
 
 - Whenever we mention "sample" we mean just _one dimension_ of the feature vectors in our minibatch, as normalization is done _per dimension_. This means, for e.g. the feature vector $[2.31, 5.12, 0.12]$, Batch Normalization is applied _three times_, so once per dimension.
 - Contrary to _true_ $(0, 1)$ normalization, a small value represented by $\epsilon$ is added to the square root, to ensure that the denominator is nonzero - avoiding division by zero errors.
