@@ -25,7 +25,7 @@ Are you ready? Let's go! :)
 
 * * *
 
-\[toc\]
+[toc]
 
 * * *
 
@@ -37,7 +37,8 @@ Before we start coding, let's take a brief look at [Batch Normalization](https:/
 
 Suppose that you have this neural network, which is composed of Dropout neurons:
 
-[![](images/dropout.png)](https://www.machinecurve.com/wp-content/uploads/2019/12/dropout.png)
+![dropout](https://github.com/abhishek116002/deep-learning-concepts/assets/30736713/af32d6e0-fec6-4ee9-920e-26f54521ca6a)
+
 
 Following the [high-level supervised machine learning process](https://www.machinecurve.com/index.php/2019/10/04/about-loss-and-loss-functions/#the-high-level-supervised-learning-process), training such a neural network is a multi-step process:
 
@@ -52,7 +53,7 @@ Following the [high-level supervised machine learning process](https://www.machi
 
 Now take a look at the neural network from a per-layer point of view. Each layer takes some input, performs a linear operation using the input vector and the weights vector, feeds the data into a nonlinear activation function, and passes the data to the next layer or the output.
 
-Neural networks train fast if the distribution of the data remains the same, and especially if it is normalized to the range of \[latex\](\\mu = 0, \\sigma = 1)\[/latex\]. This is not the case when no Batch Normalization is applied: by training the network (i.e. changing the weights of the individual neurons), the outputs for every layer change, which means that the distribution of input data for every layer will change during every iteration.
+Neural networks train fast if the distribution of the data remains the same, and especially if it is normalized to the range of $(\mu = 0, \sigma = 1)$. This is not the case when no Batch Normalization is applied: by training the network (i.e. changing the weights of the individual neurons), the outputs for every layer change, which means that the distribution of input data for every layer will change during every iteration.
 
 We call this _internal covariate shift_ (Ioffe & Szegedy, 2015). It is bad, because it can slow down learning. Fortunately, it can be avoided - and Batch Normalization is a way of doing so.
 
@@ -60,20 +61,20 @@ We call this _internal covariate shift_ (Ioffe & Szegedy, 2015). It is bad, beca
 
 As we saw before, neural networks train fast if the distribution of the input data remains similar over time. Batch Normalization helps you do this by doing two things: _normalizing the input value_ and _scaling and shifting it_.
 
-**Normalizing the value:** \[latex\]\\hat{x}\_B^{(k)} \\leftarrow \\frac{x\_B{ ^{(k)} } - \\mu\_B^{(k)}}{\\sqrt{ \\sigma^2{ \_B^{(k)} } + \\epsilon}}\[/latex\]
+**Normalizing the value:** $$\hat{x}_B^{(k)} \leftarrow \frac{x_B{ ^{(k)} } - \mu_B^{(k)}}{\sqrt{ \sigma^2{ _B^{(k)} } + \epsilon}}$$
 
-Every input \[latex\]x\_B{ ^{(k)}}\[/latex\] is normalized by first subtracting input sample mean \[latex\] \\mu\_B^{(k)} \[/latex\] and then dividing by \[latex\] \\sqrt{ \\sigma^2{ \_B^{(k)} } + \\epsilon} \[/latex\], which is the square root of the variance of the input sample, plus some \[latex\] \\epsilon \[/latex\]. Do note:
+Every input $x_B{ ^{(k)}}$ is normalized by first subtracting input sample mean $ \mu_B^{(k)} $ and then dividing by $ \sqrt{ \sigma^2{_B^{(k)} } + \epsilon} $, which is the square root of the variance of the input sample, plus some $ \epsilon $. Do note:
 
-- Whenever we mention "sample" we mean just _one dimension_ of the feature vectors in our minibatch, as normalization is done _per dimension_. This means, for e.g. the feature vector \[latex\]\[2.31, 5.12, 0.12\]\[/latex\], Batch Normalization is applied _three times_, so once per dimension.
-- Contrary to _true_ \[latex\](0, 1)\[/latex\] normalization, a small value represented by \[latex\]\\epsilon\[/latex\] is added to the square root, to ensure that the denominator is nonzero - avoiding division by zero errors.
+- Whenever we mention "sample" we mean just _one dimension_ of the feature vectors in our minibatch, as normalization is done _per dimension_. This means, for e.g. the feature vector $[2.31, 5.12, 0.12]$, Batch Normalization is applied _three times_, so once per dimension.
+- Contrary to _true_ $(0, 1)$ normalization, a small value represented by $\epsilon$ is added to the square root, to ensure that the denominator is nonzero - avoiding division by zero errors.
 
-**Scaling and shifting:** \[latex\]y\_i \\leftarrow \\gamma\\hat{x} \_B ^{(k)} + \\beta\[/latex\].
+**Scaling and shifting:** $$y_i \leftarrow \gamma\hat{x} _B ^{(k)} + \beta$$.
 
-With some activation functions (such as the Sigmoid activation function), normalizing inputs to have the \[latex\](0, 1)\[/latex\] distribution may result in a different issue: they'll activate almost linearly as they primarily activate in the linear segment of the activation function.
+With some activation functions (such as the Sigmoid activation function), normalizing inputs to have the $(0, 1)$ distribution may result in a different issue: they'll activate almost linearly as they primarily activate in the linear segment of the activation function.
 
 [Here](https://www.machinecurve.com/index.php/2020/01/14/what-is-batch-normalization-for-training-neural-networks/#scaling-and-shifting), I explain this in more detail, and why this needs to be avoided.
 
-By _scaling_ the value with some \[latex\]\\gamma\[/latex\] and _shifting_ the value with some \[latex\]\\beta\[/latex\], this problem can be avoided. The values for these are learnt during training.
+By _scaling_ the value with some $\gamma$ and _shifting_ the value with some $\beta$, this problem can be avoided. The values for these are learnt during training.
 
 ### Batch Normalization in the Keras API
 
@@ -87,9 +88,9 @@ Put simply, Batch Normalization can be added as easily as adding a `BatchNormali
 
 - **Axis**: the axis of your data which you like Batch Normalization to be applied on. Usually, this is not of importance, but if you have a channels-first Conv layer, it must be set to 1.
 - **Momentum**: the momentum that is to be used on the moving mean and the moving variance.
-- **Epsilon**: the value for \[latex\]\\epsilon\[/latex\] that is to be used in the normalization step, to avoid division by zero (also see the Batch Normalization formula above).
-- **Center**: if `True`, the value for \[latex\]\\beta\[/latex\] is used; if `False`, it's ignored.
-- **Scale**: if `True`, the value for \[latex\]\\gamma\[/latex\] is used; if `False`, it's ignored.
+- **Epsilon**: the value for $\epsilon$ that is to be used in the normalization step, to avoid division by zero (also see the Batch Normalization formula above).
+- **Center**: if `True`, the value for $\beta$ is used; if `False`, it's ignored.
+- **Scale**: if `True`, the value for $\gamma$ is used; if `False`, it's ignored.
 - **Beta initializer, regularizer and constraint:** these define the Keras initializer, regularizer and constraints for the _beta_ i.e. the center factor. They give you more control over how the network learns the values during training.
 - **Gamma initializer, regularizer and constraint:** these define the Keras initializer, regularizer and constraints for the _gamma_ i.e. the scaling factor. They give you more control over how the network learns the values during training.
 - **Moving mean initializer, moving variance initializer:** these define the Keras initializers for the moving mean and moving variance.
@@ -112,7 +113,8 @@ Let's take a look at the model we're going to create today :) First, we'll see w
 
 For the dataset, we're using the KMNIST dataset today:
 
-[![](images/kmnist-kmnist.png)](https://www.machinecurve.com/wp-content/uploads/2020/01/kmnist-kmnist.png)
+![kmnist-kmnist](https://github.com/abhishek116002/deep-learning-concepts/assets/30736713/295a8884-b3ae-4887-a245-9389a1dfb52d)
+
 
 It is a drop-in replacement for the MNIST dataset:
 
@@ -147,9 +149,11 @@ And subsequently loading the data into the particular variables is also easy:
 
 This is the architecture of today's model, which we generated with [Net2Vis](https://www.machinecurve.com/index.php/2020/01/07/visualizing-keras-neural-networks-with-net2vis-and-docker/) (Bäuerle & Ropinski, 2019):
 
-- [![](images/graph-1-1-1024x173.png)](https://www.machinecurve.com/wp-content/uploads/2020/01/graph-1-1.png)
-    
-- [![](images/legend-1-1024x108.png)](https://www.machinecurve.com/wp-content/uploads/2020/01/legend-1.png)
+- ![graph-1-1-1024x173](https://github.com/abhishek116002/deep-learning-concepts/assets/30736713/b0897ff7-df9c-4d74-86de-8342fc0a2fc2)
+
+- ![legend-1-1024x108](https://github.com/abhishek116002/deep-learning-concepts/assets/30736713/e75fa063-e7fe-4587-854b-8520810582fe)
+
+
     
 
 Our model has two _convolutional_ blocks followed by two _dense_ layers:
@@ -412,9 +416,10 @@ To start training, open up a terminal which has the required software dependenci
 
 Most likely, the training process will then begin, and you should see the test results once it finishes. Here are the results over the epochs shown visually. They were generated by means of the `history` object (note that you must add [extra code](https://www.machinecurve.com/index.php/2019/10/08/how-to-visualize-the-training-process-in-keras/) to make this work):
 
-- [![](images/accuracy.png)](https://www.machinecurve.com/wp-content/uploads/2020/01/accuracy.png)
-    
-- [![](images/loss-3.png)](https://www.machinecurve.com/wp-content/uploads/2020/01/loss-3.png)
+- ![accuracy](https://github.com/abhishek116002/deep-learning-concepts/assets/30736713/5a58cc09-9233-4a3c-8882-4f07104e7da9)
+
+- ![loss-3](https://github.com/abhishek116002/deep-learning-concepts/assets/30736713/71c1c3f3-c5ae-426a-a746-5c77b6bcb72c)
+
     
 
 As you can see, the model performs well. Obviously, for practical settings, this will be different as your data set is likely much more complex, but I'm curious whether Batch Normalization will help ensure faster convergence in your models! Please let me know in the comments section below :)
@@ -429,18 +434,19 @@ This was followed by a Keras implementation using the TensorFlow 2.0 way of work
 
 A long story short: I hope you've learnt something today! If you did, I'd love to know what, and you can leave a comment below. Please do the same if you have questions left or remarks that you wish to express. Thank you for reading MachineCurve today and happy engineering! 😊
 
-\[kerasbox\]
+[kerasbox]
 
 * * *
 
 ## References
 
-Ioffe, S., & Szegedy, C. (2015). [Batch normalization: Accelerating deep network training by reducing internal covariate shift](https://arxiv.org/abs/1502.03167). _arXiv preprint arXiv:1502.03167_.
+Ioffe, S., & Szegedy, C. (2015). [Batch normalization: Accelerating deep network training by reducing internal covariate shift](https://arxiv.org/abs/1502.03167). _arXiv preprint arXiv:1502.03167_.
 
-Bäuerle, A., & Ropinski, T. (2019). [Net2Vis: Transforming Deep Convolutional Networks into Publication-Ready Visualizations](https://arxiv.org/abs/1902.04394). arXiv preprint arXiv:1902.04394.
+Bäuerle, A., & Ropinski, T. (2019). [Net2Vis: Transforming Deep Convolutional Networks into Publication-Ready Visualizations](https://arxiv.org/abs/1902.04394). arXiv preprint arXiv:1902.04394.
 
 MachineCurve. (2020, January 14). What is Batch Normalization for training neural networks? Retrieved from [https://www.machinecurve.com/index.php/2020/01/14/what-is-batch-normalization-for-training-neural-networks/](https://www.machinecurve.com/index.php/2020/01/14/what-is-batch-normalization-for-training-neural-networks/)
 
-Clanuwat, T., Bober-Irizar, M., Kitamoto, A., Lamb, A., Yamamoto, K., & Ha, D. (2018). Deep learning for classical Japanese literature. arXiv preprint arXiv:1812.01718. Retrieved from [https://arxiv.org/abs/1812.01718](https://arxiv.org/abs/1812.01718)
+Clanuwat, T., Bober-Irizar, M., Kitamoto, A., Lamb, A., Yamamoto, K., & Ha, D. (2018). Deep learning for classical Japanese literature. arXiv preprint arXiv:1812.01718. Retrieved from [https://arxiv.org/abs/1812.01718](https://arxiv.org/abs/1812.01718)
 
-TensorFlow. (n.d.). tf.keras.layers.BatchNormalization. Retrieved from [https://www.tensorflow.org/api\_docs/python/tf/keras/layers/BatchNormalization](https://www.tensorflow.org/api_docs/python/tf/keras/layers/BatchNormalization)
+TensorFlow. (n.d.). tf.keras.layers.BatchNormalization. Retrieved from [https://www.tensorflow.org/api_docs/python/tf/keras/layers/BatchNormalization](https://www.tensorflow.org/api_docs/python/tf/keras/layers/BatchNormalization)
+
