@@ -107,7 +107,7 @@ The second important thing to understand about Batch Normalization is that it ma
 
 ### Four-step process
 
-Now, the algorithm. For each feature $x_B^{(k)} $ in your feature vector $\textbf{x}_B$ (which, for your hidden layers, doesn't contain your features but rather the inputs for that particular layer), Batch Normalization normalizes the values with a four-step process on your minibatch $B$ (Ioffe & Szegedy, 2015):
+Now, the algorithm. For each feature $x_{B}^{(k)}$ in your feature vector $\textbf{x}_{B}$ (which, for your hidden layers, doesn't contain your features but rather the inputs for that particular layer), Batch Normalization normalizes the values with a four-step process on your minibatch $B$ (Ioffe & Szegedy, 2015):
 
 1. **Computing the mean of your minibatch**: $$\mu_B^{(k)} \leftarrow \frac{1}{m} \sum\limits_{i=1}^m x_B{ _i ^{(k)} } $$.
 2. **Computing the variance of your minibatch:** $${\sigma^2_{ B } }^{(k)} \leftarrow \frac{1}{m} \sum\limits_{i=1}^m ( x_B{ _i ^{(k)} } - \mu_B^{(k)})^2$$
